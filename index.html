@@ -3,51 +3,89 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Controle ESP32 - LED</title>
+<title>Controle ESP32 - 2 LEDs</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
-<h1>Controle do LED (ESP32)</h1>
-<p id="status">Carregando status...</p>
-<button id="btn-on">Ligar</button>
-<button id="btn-off">Desligar</button>
-<script>
-// Substitua pela sua url do Realtime Database (sem / no final)
-const FIREBASE_DATABASE_URL = "https://esp32-led-9a1db-default-rtdb.firebaseio.com/";
-const ledEndpoint = FIREBASE_DATABASE_URL + "/led.json";
-const statusEl = document.getElementById('status');
-const btnOn = document.getElementById('btn-on');
-const btnOff = document.getElementById('btn-off');
-async function lerStatus() {
+<h1>Controle dos LEDs (ESP32)</h1>
+<h3>Feito Por: </h3><h3>𝓜𝓪𝓻𝓲𝓪 𝓛𝓾𝓲𝔃𝓪 𝓑𝓪𝓻𝓻𝓸𝓼 𝓔𝓵𝓲𝓪𝓼 & 𝓝𝓪𝓽𝓱𝓪𝓵𝔂 𝓜𝓪𝓻𝓲𝓪 𝓖𝓪𝓵𝓵𝓪𝓷𝓽𝓮 𝓢𝓶𝓪𝓷𝓲𝓸𝓽𝓸</h3>
 
-try {
-const res = await fetch(ledEndpoint);
-const data = await res.json();
-const s = data && data.status ? data.status : "UNKNOWN";
-statusEl.textContent = "Status atual: " + s;
-} catch (e) {
-statusEl.textContent = "Erro ao ler status: " + e;
+
+<!-- LED 1 -->
+<div class="led-control">
+    <h2>LED 1</h2>
+    <p id="status1">Carregando status...</p>
+    <button id="btn1-on">Ligar</button>
+    <button id="btn1-off">Desligar</button>
+</div>
+
+<!-- LED 2 -->
+<div class="led-control">
+    <h2>LED 2</h2>
+    <p id="status2">Carregando status...</p>
+    <button id="btn2-on">Ligar</button>
+    <button id="btn2-off">Desligar</button>
+</div>
+
+<script>
+// URL base do Firebase (sem / no final)
+const FIREBASE_DATABASE_URL = "https://esp32-led-9a1db-default-rtdb.firebaseio.com/";
+
+// Endpoints de cada LED
+const led1Endpoint = FIREBASE_DATABASE_URL + "/led1.json";
+const led2Endpoint = FIREBASE_DATABASE_URL + "/led2.json";
+
+// Elementos LED1
+const statusEl1 = document.getElementById('status1');
+const btn1On = document.getElementById('btn1-on');
+const btn1Off = document.getElementById('btn1-off');
+
+// Elementos LED2
+const statusEl2 = document.getElementById('status2');
+const btn2On = document.getElementById('btn2-on');
+const btn2Off = document.getElementById('btn2-off');
+
+// Função genérica para ler status
+async function lerStatus(endpoint, statusEl) {
+    try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        const s = data && data.status ? data.status : "UNKNOWN";
+        statusEl.textContent = "Status atual: " + s;
+    } catch (e) {
+        statusEl.textContent = "Erro ao ler status: " + e;
+    }
 }
+
+// Função genérica para atualizar status
+async function setStatus(endpoint, novoStatus, statusEl) {
+    try {
+        await fetch(endpoint, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: novoStatus })
+        });
+        await lerStatus(endpoint, statusEl);
+    } catch (e) {
+        statusEl.textContent = "Erro ao enviar comando: " + e;
+    }
 }
-async function setStatus(novoStatus) {
-try {
-// Usamos PATCH para atualizar somente 'status'
-await fetch(ledEndpoint, {
-method: "PATCH",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify({ status: novoStatus })
-});
-await lerStatus();
-} catch (e) {
-statusEl.textContent = "Erro ao enviar comando: " + e;
-}
-}
-btnOn.addEventListener('click', ()=> setStatus("ON"));
-btnOff.addEventListener('click', ()=> setStatus("OFF"));
-// Atualiza status a cada 3s
-lerStatus();
-setInterval(lerStatus, 3000);
+
+// Eventos LED1
+btn1On.addEventListener('click', () => setStatus(led1Endpoint, "ON", statusEl1));
+btn1Off.addEventListener('click', () => setStatus(led1Endpoint, "OFF", statusEl1));
+
+// Eventos LED2
+btn2On.addEventListener('click', () => setStatus(led2Endpoint, "ON", statusEl2));
+btn2Off.addEventListener('click', () => setStatus(led2Endpoint, "OFF", statusEl2));
+
+// Atualiza status de ambos LEDs a cada 3s
+lerStatus(led1Endpoint, statusEl1);
+lerStatus(led2Endpoint, statusEl2);
+setInterval(() => {
+    lerStatus(led1Endpoint, statusEl1);
+    lerStatus(led2Endpoint, statusEl2);
+}, 3000);
 </script>
 </body>
 </html>

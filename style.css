@@ -3,16 +3,15 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background: linear-gradient(135deg, #c79cf5, #99bdfc);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
     color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
     padding: 40px 20px;
+    min-height: 100vh;
 }
 
 @keyframes gradientBG {
@@ -21,47 +20,71 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* ===== Card principal ===== */
-h1, #status, button {
-    max-width: 400px;
-    width: 100%;
+/* ===== Título principal ===== */
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
 }
 
-h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+/* ===== Containers dos LEDs ===== */
+.led-control {
+    background: rgba(0,0,0,0.3);
+    padding: 25px 30px;
+    margin: 15px 0;
+    border-radius: 16px;
     text-align: center;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.led-control:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+.led-control h2 {
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    color: #ffd700; /* dourado */
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 }
 
 /* ===== Status ===== */
-#status {
-    background: rgba(0,0,0,0.3);
-    padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 16px;
-    text-align: center;
+p[id^="status"] {
     font-size: 1.2rem;
     font-weight: 600;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.1);
+    padding: 15px 20px;
+    border-radius: 12px;
     text-shadow: 1px 1px 3px #000;
     transition: all 0.3s ease;
 }
 
 /* ===== Botões ===== */
 button {
-    padding: 15px 30px;
-    margin: 10px 0;
+    padding: 15px 35px;
+    margin: 10px 5px;
     font-size: 1.1rem;
     font-weight: bold;
     border-radius: 12px;
     border: none;
     cursor: pointer;
-    background: linear-gradient(45deg, #11998e, #38ef7d);
-    color: #fff;
     box-shadow: 0 6px 15px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
 }
+
+/* Botão LED 1 */
+#btn1-on { background: linear-gradient(45deg, #ff416c, #ff4b2b); color: #fff; }
+#btn1-off { background: linear-gradient(45deg, #833ab4, #fd1d1d); color: #fff; }
+
+/* Botão LED 2 */
+#btn2-on { background: linear-gradient(45deg, #11998e, #38ef7d); color: #fff; }
+#btn2-off { background: linear-gradient(45deg, #0f2027, #203a43); color: #fff; }
 
 button:hover {
     transform: translateY(-3px);
@@ -73,24 +96,12 @@ button:active {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-/* Botão OFF diferente */
-#btn-off {
-    background: linear-gradient(45deg,  #ff416c, #ff4b2b);
-}
-
 /* ===== Responsivo ===== */
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.6rem;
-    }
-
-    #status {
-        font-size: 1rem;
-        padding: 15px;
-    }
-
-    button {
-        width: 90%;
-        font-size: 1rem;
-    }
+@media (max-width: 500px) {
+    h1 { font-size: 1.8rem; }
+    .led-control { padding: 20px 15px; }
+    .led-control h2 { font-size: 1.4rem; }
+    p[id^="status"] { font-size: 1rem; padding: 12px 15px; }
+    button { width: 80%; padding: 12px 0; font-size: 1rem; }
 }
+
