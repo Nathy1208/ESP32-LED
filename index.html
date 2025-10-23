@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Controle ESP32 - LED</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<h1>Controle do LED (ESP32)</h1>
+<p id="status">Carregando status...</p>
+<button id="btn-on">Ligar</button>
+<button id="btn-off">Desligar</button>
+<script>
+// Substitua pela sua url do Realtime Database (sem / no final)
+const FIREBASE_DATABASE_URL = "https://esp32-led-9a1db-default-rtdb.firebaseio.com/";
+const ledEndpoint = FIREBASE_DATABASE_URL + "/led.json";
+const statusEl = document.getElementById('status');
+const btnOn = document.getElementById('btn-on');
+const btnOff = document.getElementById('btn-off');
+async function lerStatus() {
+
+try {
+const res = await fetch(ledEndpoint);
+const data = await res.json();
+const s = data && data.status ? data.status : "UNKNOWN";
+statusEl.textContent = "Status atual: " + s;
+} catch (e) {
+statusEl.textContent = "Erro ao ler status: " + e;
+}
+}
+async function setStatus(novoStatus) {
+try {
+// Usamos PATCH para atualizar somente 'status'
+await fetch(ledEndpoint, {
+method: "PATCH",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ status: novoStatus })
+});
+await lerStatus();
+} catch (e) {
+statusEl.textContent = "Erro ao enviar comando: " + e;
+}
+}
+btnOn.addEventListener('click', ()=> setStatus("ON"));
+btnOff.addEventListener('click', ()=> setStatus("OFF"));
+// Atualiza status a cada 3s
+lerStatus();
+setInterval(lerStatus, 3000);
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+
+/* ===== Fundo animado ===== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* ===== Card principal ===== */
+h1, #status, button {
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ===== Status ===== */
+#status {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 16px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    text-shadow: 1px 1px 3px #000;
+    transition: all 0.3s ease;
+}
+
+/* ===== Botões ===== */
+button {
+    padding: 15px 30px;
+    margin: 10px 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(45deg, #11998e, #38ef7d);
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Botão OFF diferente */
+#btn-off {
+    background: linear-gradient(45deg,  #ff416c, #ff4b2b);
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    #status {
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    button {
+        width: 90%;
+        font-size: 1rem;
+    }
+}
